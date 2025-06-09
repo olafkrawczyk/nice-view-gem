@@ -6,7 +6,7 @@ This shield requires that an `&nice_view_spi` labeled SPI bus is provided with _
 
 ## Animation Timeout Option
 
-A config option is available to stop animations after a configurable timeout to preserve battery. To enable, add to your shield config:
+A config option is available to stop animations after a configurable timeout to preserve battery. This feature requires animations to be enabled (`CONFIG_NICE_VIEW_GEM_ANIMATION=y`). To enable the timeout feature, add to your shield config:
 
 ```
 CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT=y

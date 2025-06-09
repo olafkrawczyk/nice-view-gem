@@ -35,7 +35,7 @@ const lv_img_dsc_t *anim_imgs[] = {
 
 #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
 #define ANIM_TIMEOUT_MS (CONFIG_NICE_VIEW_GEM_ANIM_TIMEOUT_SECONDS * 1000)
-#define ANIM_CHECK_INTERVAL_MS 1000  // Check for animation timeout every second
+#define ANIM_CHECK_INTERVAL_MS 1000 // Check for animation timeout every second
 static uint32_t last_anim_activity_time;
 static bool anim_stopped = false;
 static lv_obj_t *animation_obj = NULL;
@@ -63,11 +63,11 @@ void draw_animation(lv_obj_t *canvas) {
     if (animation_obj != NULL) {
         animation_cleanup();
     }
-    
+
     animation_obj = art;
     last_anim_activity_time = k_uptime_get_32();
     anim_stopped = false;
-    
+
     // Initialize and start the animation timer
     k_work_init_delayable(&animation_timer, animation_timer_handler);
     k_work_schedule(&animation_timer, K_MSEC(ANIM_CHECK_INTERVAL_MS));
@@ -88,13 +88,13 @@ void draw_animation(lv_obj_t *canvas) {
 #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
 void animation_reset_timeout(void) {
     last_anim_activity_time = k_uptime_get_32();
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
     if (anim_stopped && animation_obj != NULL) {
         anim_stopped = false;
-// Re-enable animation
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
+        // Re-enable animation
         lv_animimg_start(animation_obj);
-#endif
     }
+#endif
 }
 
 static int position_state_changed_listener(const zmk_event_t *eh) {
@@ -110,7 +110,7 @@ ZMK_SUBSCRIPTION(animation_position_state_listener, zmk_position_state_changed);
 #endif
 
 void animation_update(void) {
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT) && IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
     if (animation_obj == NULL) {
         return;
     }
@@ -119,14 +119,12 @@ void animation_update(void) {
     if (!anim_stopped && (now - last_anim_activity_time > ANIM_TIMEOUT_MS)) {
         anim_stopped = true;
         // Stop animation to preserve battery
-        #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
         lv_animimg_stop(animation_obj);
-        #endif
     }
 #endif
 }
 
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT) && IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
 void animation_cleanup(void) {
     // Cancel the animation timer to prevent memory leaks
     k_work_cancel_delayable(&animation_timer);
