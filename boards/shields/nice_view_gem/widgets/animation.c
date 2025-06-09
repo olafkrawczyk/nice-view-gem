@@ -5,7 +5,7 @@
 #include <zephyr/logging/log.h>
 LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT) && IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
 #include <zmk/event_manager.h>
 #include <zmk/events/position_state_changed.h>
 #endif
@@ -33,7 +33,7 @@ const lv_img_dsc_t *anim_imgs[] = {
     &crystal_13, &crystal_14, &crystal_15, &crystal_16,
 };
 
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT) && IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
 #define ANIM_TIMEOUT_MS (CONFIG_NICE_VIEW_GEM_ANIM_TIMEOUT_SECONDS * 1000)
 #define ANIM_CHECK_INTERVAL_MS 1000 // Check for animation timeout every second
 static uint32_t last_anim_activity_time;
@@ -58,7 +58,7 @@ void draw_animation(lv_obj_t *canvas) {
     lv_animimg_set_repeat_count(art, LV_ANIM_REPEAT_INFINITE);
     lv_animimg_start(art);
 
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT) && IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
     // Clean up any existing animation timer
     if (animation_obj != NULL) {
         animation_cleanup();
@@ -85,16 +85,14 @@ void draw_animation(lv_obj_t *canvas) {
     lv_obj_align(art, LV_ALIGN_TOP_LEFT, 36, 0);
 }
 
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT) && IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
 void animation_reset_timeout(void) {
     last_anim_activity_time = k_uptime_get_32();
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
     if (anim_stopped && animation_obj != NULL) {
         anim_stopped = false;
         // Re-enable animation
         lv_animimg_start(animation_obj);
     }
-#endif
 }
 
 static int position_state_changed_listener(const zmk_event_t *eh) {
@@ -109,8 +107,8 @@ ZMK_LISTENER(animation_position_state_listener, position_state_changed_listener)
 ZMK_SUBSCRIPTION(animation_position_state_listener, zmk_position_state_changed);
 #endif
 
-void animation_update(void) {
 #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT) && IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
+void animation_update(void) {
     if (animation_obj == NULL) {
         return;
     }
@@ -121,8 +119,8 @@ void animation_update(void) {
         // Stop animation to preserve battery
         lv_animimg_stop(animation_obj);
     }
-#endif
 }
+#endif
 
 #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT) && IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
 void animation_cleanup(void) {
