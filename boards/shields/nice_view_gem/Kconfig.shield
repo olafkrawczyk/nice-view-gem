@@ -1,2 +1,15 @@
 config SHIELD_NICE_VIEW_GEM
     def_bool $(shields_list_contains,nice_view_gem)
+
+config NICE_VIEW_GEM_STOP_ANIM_TIMEOUT
+    bool "Stop animations after timeout to preserve battery"
+    default n
+    help
+      If enabled, stops animations after a configurable timeout to save battery. Disabled by default.
+
+config NICE_VIEW_GEM_ANIM_TIMEOUT_SECONDS
+    int "Animation timeout in seconds"
+    default 10
+    depends on NICE_VIEW_GEM_STOP_ANIM_TIMEOUT
+    help
+      Number of seconds of inactivity before stopping animation to save battery.
