@@ -2,6 +2,9 @@
 #include <zephyr/kernel.h>
 #include "animation.h"
 
+#include <zephyr/logging/log.h>
+LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
+
 #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
 #include <zmk/event_manager.h>
 #include <zmk/events/position_state_changed.h>
@@ -32,9 +35,17 @@ const lv_img_dsc_t *anim_imgs[] = {
 
 #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
 #define ANIM_TIMEOUT_MS (CONFIG_NICE_VIEW_GEM_ANIM_TIMEOUT_SECONDS * 1000)
+#define ANIM_CHECK_INTERVAL_MS 1000  // Check for animation timeout every second
 static uint32_t last_anim_activity_time;
 static bool anim_stopped = false;
 static lv_obj_t *animation_obj = NULL;
+static struct k_work_delayable animation_timer;
+
+static void animation_timer_handler(struct k_work *work) {
+    animation_update();
+    // Reschedule the timer
+    k_work_schedule(&animation_timer, K_MSEC(ANIM_CHECK_INTERVAL_MS));
+}
 #endif
 
 void draw_animation(lv_obj_t *canvas) {
@@ -48,9 +59,18 @@ void draw_animation(lv_obj_t *canvas) {
     lv_animimg_start(art);
 
 #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+    // Clean up any existing animation timer
+    if (animation_obj != NULL) {
+        animation_cleanup();
+    }
+    
     animation_obj = art;
     last_anim_activity_time = k_uptime_get_32();
     anim_stopped = false;
+    
+    // Initialize and start the animation timer
+    k_work_init_delayable(&animation_timer, animation_timer_handler);
+    k_work_schedule(&animation_timer, K_MSEC(ANIM_CHECK_INTERVAL_MS));
 #endif
 #else
     lv_obj_t *art = lv_img_create(canvas);
@@ -98,10 +118,18 @@ void animation_update(void) {
     uint32_t now = k_uptime_get_32();
     if (!anim_stopped && (now - last_anim_activity_time > ANIM_TIMEOUT_MS)) {
         anim_stopped = true;
-// Stop animation to preserve battery
-#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
+        // Stop animation to preserve battery
+        #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_ANIMATION)
         lv_animimg_stop(animation_obj);
-#endif
+        #endif
     }
 #endif
 }
+
+#if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+void animation_cleanup(void) {
+    // Cancel the animation timer to prevent memory leaks
+    k_work_cancel_delayable(&animation_timer);
+    animation_obj = NULL;
+}
+#endif

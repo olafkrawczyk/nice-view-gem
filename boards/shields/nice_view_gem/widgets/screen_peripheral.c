@@ -31,6 +31,11 @@ static void draw_top(lv_obj_t *widget, lv_color_t cbuf[], const struct status_st
     // Draw widgets
     draw_output_status(canvas, state);
     draw_battery_status(canvas, state);
+    
+    #if IS_ENABLED(CONFIG_NICE_VIEW_GEM_STOP_ANIM_TIMEOUT)
+    // Update animation timeout
+    animation_update();
+    #endif
 
     // Rotate for horizontal display
     rotate_canvas(canvas, cbuf);
