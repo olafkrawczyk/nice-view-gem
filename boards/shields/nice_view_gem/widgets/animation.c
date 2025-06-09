@@ -91,6 +91,9 @@ void animation_reset_timeout(void) {
     if (anim_stopped && animation_obj != NULL) {
         anim_stopped = false;
         // Re-enable animation
+        lv_animimg_set_src(animation_obj, (const void **)anim_imgs, 16);
+        lv_animimg_set_duration(animation_obj, CONFIG_NICE_VIEW_GEM_ANIMATION_MS);
+        lv_animimg_set_repeat_count(animation_obj, LV_ANIM_REPEAT_INFINITE);
         lv_animimg_start(animation_obj);
     }
 }
@@ -117,7 +120,8 @@ void animation_update(void) {
     if (!anim_stopped && (now - last_anim_activity_time > ANIM_TIMEOUT_MS)) {
         anim_stopped = true;
         // Stop animation to preserve battery
-        lv_animimg_stop(animation_obj);
+        lv_obj_invalidate(animation_obj);
+        lv_anim_del(animation_obj, NULL);
     }
 }
 #endif
