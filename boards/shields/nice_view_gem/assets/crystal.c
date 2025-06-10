@@ -540,6 +540,7 @@ const lv_img_dsc_t crystal_08 = {
 #define LV_ATTRIBUTE_IMG_CRYSTAL_09
 #endif
 
+// Using the same data as crystal_08 (frame 8)
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_CRYSTAL_09 uint8_t
     crystal_09_map[] = {
 #if CONFIG_NICE_VIEW_WIDGET_INVERTED
@@ -600,13 +601,14 @@ const lv_img_dsc_t crystal_09 = {
     .header.w = 69,
     .header.h = 68,
     .data_size = 620,
-    .data = crystal_09_map,
+    .data = crystal_08_map, // Using frame 8 data
 };
 
 #ifndef LV_ATTRIBUTE_IMG_CRYSTAL_10
 #define LV_ATTRIBUTE_IMG_CRYSTAL_10
 #endif
 
+// Using the same data as crystal_07 (frame 7)
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_CRYSTAL_10 uint8_t
     crystal_10_map[] = {
 #if CONFIG_NICE_VIEW_WIDGET_INVERTED
@@ -667,13 +669,14 @@ const lv_img_dsc_t crystal_10 = {
     .header.w = 69,
     .header.h = 68,
     .data_size = 620,
-    .data = crystal_10_map,
+    .data = crystal_07_map, // Using frame 7 data
 };
 
 #ifndef LV_ATTRIBUTE_IMG_CRYSTAL_11
 #define LV_ATTRIBUTE_IMG_CRYSTAL_11
 #endif
 
+// Using the same data as crystal_06 (frame 6)
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_CRYSTAL_11 uint8_t
     crystal_11_map[] = {
 #if CONFIG_NICE_VIEW_WIDGET_INVERTED
@@ -734,13 +737,14 @@ const lv_img_dsc_t crystal_11 = {
     .header.w = 69,
     .header.h = 68,
     .data_size = 620,
-    .data = crystal_11_map,
+    .data = crystal_06_map, // Using frame 6 data
 };
 
 #ifndef LV_ATTRIBUTE_IMG_CRYSTAL_12
 #define LV_ATTRIBUTE_IMG_CRYSTAL_12
 #endif
 
+// Using the same data as crystal_05 (frame 5)
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_CRYSTAL_12 uint8_t
     crystal_12_map[] = {
 #if CONFIG_NICE_VIEW_WIDGET_INVERTED
@@ -801,13 +805,14 @@ const lv_img_dsc_t crystal_12 = {
     .header.w = 69,
     .header.h = 68,
     .data_size = 620,
-    .data = crystal_12_map,
+    .data = crystal_05_map, // Using frame 5 data
 };
 
 #ifndef LV_ATTRIBUTE_IMG_CRYSTAL_13
 #define LV_ATTRIBUTE_IMG_CRYSTAL_13
 #endif
 
+// Using the same data as crystal_04 (frame 4)
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_CRYSTAL_13 uint8_t
     crystal_13_map[] = {
 #if CONFIG_NICE_VIEW_WIDGET_INVERTED
@@ -868,13 +873,14 @@ const lv_img_dsc_t crystal_13 = {
     .header.w = 69,
     .header.h = 68,
     .data_size = 620,
-    .data = crystal_13_map,
+    .data = crystal_04_map, // Using frame 4 data
 };
 
 #ifndef LV_ATTRIBUTE_IMG_CRYSTAL_14
 #define LV_ATTRIBUTE_IMG_CRYSTAL_14
 #endif
 
+// Using the same data as crystal_03 (frame 3)
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_CRYSTAL_14 uint8_t
     crystal_14_map[] = {
 #if CONFIG_NICE_VIEW_WIDGET_INVERTED
@@ -935,13 +941,14 @@ const lv_img_dsc_t crystal_14 = {
     .header.w = 69,
     .header.h = 68,
     .data_size = 620,
-    .data = crystal_14_map,
+    .data = crystal_03_map, // Using frame 3 data
 };
 
 #ifndef LV_ATTRIBUTE_IMG_CRYSTAL_15
 #define LV_ATTRIBUTE_IMG_CRYSTAL_15
 #endif
 
+// Using the same data as crystal_02 (frame 2)
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_CRYSTAL_15 uint8_t
     crystal_15_map[] = {
 #if CONFIG_NICE_VIEW_WIDGET_INVERTED
@@ -1002,13 +1009,14 @@ const lv_img_dsc_t crystal_15 = {
     .header.w = 69,
     .header.h = 68,
     .data_size = 620,
-    .data = crystal_15_map,
+    .data = crystal_02_map, // Using frame 2 data
 };
 
 #ifndef LV_ATTRIBUTE_IMG_CRYSTAL_16
 #define LV_ATTRIBUTE_IMG_CRYSTAL_16
 #endif
 
+// Using the same data as crystal_01 (frame 1)
 const LV_ATTRIBUTE_MEM_ALIGN LV_ATTRIBUTE_LARGE_CONST LV_ATTRIBUTE_IMG_CRYSTAL_16 uint8_t
     crystal_16_map[] = {
 #if CONFIG_NICE_VIEW_WIDGET_INVERTED
@@ -1069,5 +1077,5 @@ const lv_img_dsc_t crystal_16 = {
     .header.w = 69,
     .header.h = 68,
     .data_size = 620,
-    .data = crystal_16_map,
+    .data = crystal_01_map, // Using frame 1 data
 };
